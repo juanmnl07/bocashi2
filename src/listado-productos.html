@@ -1,0 +1,51 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-spinner/paper-spinner.html">
+
+<dom-module id="listado-productos">
+  <template>
+    <style>
+      div{
+        border-radius: 6px;
+        padding: 10px;
+        background-color: beige;
+        width: 120px;
+        text-align: center;
+      }
+    </style>
+    <iron-ajax
+      id="elajax"
+      url="http://dev.bocashi.com/api/producto/productos"
+      handle-as="json"
+      last-response="{{productos}}"
+      loading="{{cargando}}"
+    ></iron-ajax>
+    <paper-spinner alt="Cargando el usuario..." active="[[cargando]]"></paper-spinner>
+
+    <div on-tap="buscar">
+      Buscar!
+    </div>
+
+    <ul>
+      <template is="dom-repeat" items="[[productos]]">
+        <li>[[item.nombre_producto]]</li>
+      </template>
+    </ul>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: "listado-productos",
+
+      properties: {
+        cargando: Boolean,
+        productos: Array
+      },
+
+      buscar: function() {
+        this.$.elajax.generateRequest();
+      }
+    });
+  </script>
+</dom-module>
